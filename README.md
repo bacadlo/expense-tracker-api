@@ -1,6 +1,6 @@
 # Expense Tracker API
 
-A RESTful API for personal finance management built with FastAPI and PostgreSQL. Track transactions, manage budgets, and analyze spending habits with a comprehensive analytics engine.
+A RESTful API for personal finance management that tracks transactions, manages budgets, and analyzes spending habits. Built with FastAPI and PostgreSQL.
 
 ## Tech Stack
 
