@@ -55,6 +55,32 @@ uvicorn app.main:app --reload
 
 The API will be available at `http://localhost:8000`. Interactive docs are at `/docs` (Swagger UI) and `/redoc`.
 
+### Running Tests
+
+```bash
+# Install dev dependencies (includes pytest, pytest-asyncio, httpx, aiosqlite)
+pip install -e ".[dev]"
+
+# Run all tests
+pytest tests/
+
+# Run with verbose output
+pytest tests/ -v
+
+# Run specific test file
+pytest tests/test_transactions.py -v
+
+# Run specific test class
+pytest tests/test_budgets.py::TestBudgetService -v
+```
+
+The test suite uses an in-memory SQLite database for fast, isolated execution and includes:
+- **63 total tests** covering all endpoints and business logic
+- **Transaction tests**: CRUD operations, filtering, pagination
+- **Category tests**: Creation, listing, updating, deletion, constraint validation
+- **Budget tests**: CRUD with date validation, spent/remaining calculations
+- **Analytics tests**: Balance, spending breakdown, trends, budget status
+
 ## API Endpoints
 
 ### Categories
@@ -108,30 +134,39 @@ Budget details include `spent`, `remaining`, and `percentage_used` fields.
 ## Project Structure
 
 ```
-app/
-├── main.py              # Application entry point
-├── config.py            # Settings and configuration
-├── database.py          # Async database setup
-├── exceptions.py        # Custom exception handlers
-├── models/              # SQLAlchemy models
-│   ├── base.py          # Base model with timestamps
-│   ├── transaction.py
-│   ├── category.py
-│   └── budget.py
-├── schemas/             # Pydantic request/response schemas
-│   ├── transaction.py
-│   ├── category.py
-│   ├── budget.py
-│   └── analytics.py
-├── routers/             # Route handlers
-│   ├── transactions.py
-│   ├── categories.py
-│   ├── budgets.py
-│   └── analytics.py
-└── services/            # Business logic
-    ├── transaction_service.py
-    ├── budget_service.py
-    └── analytics_service.py
+expense-tracker-api/
+├── app/
+│   ├── main.py              # Application entry point
+│   ├── config.py            # Settings and configuration
+│   ├── database.py          # Async database setup
+│   ├── exceptions.py        # Custom exception handlers
+│   ├── models/              # SQLAlchemy models
+│   │   ├── base.py          # Base model with timestamps
+│   │   ├── transaction.py
+│   │   ├── category.py
+│   │   └── budget.py
+│   ├── schemas/             # Pydantic request/response schemas
+│   │   ├── transaction.py
+│   │   ├── category.py
+│   │   ├── budget.py
+│   │   └── analytics.py
+│   ├── routers/             # Route handlers
+│   │   ├── transactions.py
+│   │   ├── categories.py
+│   │   ├── budgets.py
+│   │   └── analytics.py
+│   └── services/            # Business logic
+│       ├── transaction_service.py
+│       ├── budget_service.py
+│       └── analytics_service.py
+├── tests/                   # Unit tests
+│   ├── conftest.py          # Pytest fixtures and setup
+│   ├── test_transactions.py # Transaction tests (18 tests)
+│   ├── test_categories.py   # Category tests (12 tests)
+│   ├── test_budgets.py      # Budget tests (17 tests)
+│   └── test_analytics.py    # Analytics tests (16 tests)
+├── pyproject.toml           # Project configuration and dependencies
+└── README.md
 ```
 
 ## Configuration
@@ -143,3 +178,19 @@ Environment variables (set in `.env`):
 | `DATABASE_URL` | `postgresql+asyncpg://postgres:postgres@localhost:5432/budget_tracker` | PostgreSQL connection string |
 | `APP_ENV`      | `development`                                                  | Application environment |
 | `DEBUG`        | `true`                                                         | Debug mode           |
+
+### Development Dependencies
+
+The project includes development tools for testing:
+
+```
+pytest>=9.0.2           # Testing framework
+pytest-asyncio>=1.3.0   # Async test support
+httpx>=0.28.0           # HTTP client for testing
+aiosqlite>=0.22.0       # Async SQLite for test database
+```
+
+Install dev dependencies:
+```bash
+pip install -e ".[dev]"
+```
