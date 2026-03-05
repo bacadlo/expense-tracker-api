@@ -21,7 +21,7 @@ A RESTful API for personal finance management that tracks your transactions, man
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/bacadlo/expense-tracker-api.git
 cd expense-tracker-api
 
 # Create and activate a virtual environment
